@@ -1,0 +1,141 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:OCTOVT_ETHERNET_GUI.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="750"
+        x:Class="OCTOVT_ETHERNET_GUI.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Title="OCTOVT Sensing System(IEC61850 sampled Value)"
+        Background="#F3F3F3"
+        Foreground="Black">
+
+    <Window.Styles>
+        <Style Selector="TextBlock">
+            <Setter Property="Foreground" Value="Black"/>
+        </Style>
+        <Style Selector="Button">
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        </Style>
+        <Style Selector="RadioButton">
+            <Setter Property="Foreground" Value="Black"/>
+        </Style>
+        <Style Selector="NumericUpDown">
+            <Setter Property="Foreground" Value="Black"/>
+        </Style>
+        <Style Selector="Button.accent">
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+    </Window.Styles>
+
+    <!-- 메인 레이아웃: 창 크기에 맞춰 꽉 차게 설정 -->
+    <Grid ColumnDefinitions="280, *, 220" Margin="10">
+        
+        <!-- [왼쪽 사이드바] -->
+        <Border Grid.Column="0" BorderBrush="Silver" BorderThickness="0,0,1,0" Padding="0,0,10,0">
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <StackPanel Spacing="15">
+                    
+                    <HeaderedContentControl Header="Operations">
+                        <Border BorderBrush="Silver" BorderThickness="1" CornerRadius="5" Padding="10">
+                            <StackPanel Spacing="8">
+                                <Button Name="btnOvtRun" Content="Run" Classes="accent" HorizontalAlignment="Stretch" Height="40" Background="#2196F3"/>
+                                <Button Name="BtnOvtAcquire" Content="Acquire" HorizontalAlignment="Stretch" Height="40"/>
+                            </StackPanel>
+                        </Border>
+                    </HeaderedContentControl>
+
+                    <HeaderedContentControl Header="Averaging">
+                        <Border Background="#E3F2FD" BorderBrush="#BBDEFB" BorderThickness="1" CornerRadius="5" Padding="8">
+                            <StackPanel Spacing="5">
+                                <Button Name="btnOvtAcquireAvg" Content="Acquire (averaged)" HorizontalAlignment="Stretch"/>
+                                <NumericUpDown Name="numUpDown_avgCount" Value="0" HorizontalAlignment="Stretch"/>
+                                <TextBlock Name="lbl_countState" Text="Count : 0" HorizontalAlignment="Center" FontWeight="SemiBold"/>
+                            </StackPanel>
+                        </Border>
+                    </HeaderedContentControl>
+
+                    <StackPanel Spacing="0">
+                        <Border Background="SteelBlue" CornerRadius="5,5,0,0" Padding="5">
+                            <TextBlock Text="Fit Result" Foreground="White" HorizontalAlignment="Center"/>
+                        </Border>
+                        <Border BorderBrush="SteelBlue" BorderThickness="1" CornerRadius="0,0,5,5" Padding="10" Background="White">
+                            <StackPanel Spacing="8">
+                                <TextBlock Name="lbl_AC_amplitude" Text="AC_Voltage" HorizontalAlignment="Center"/>
+                                <Separator/>
+                                <TextBlock Name="lbl_DC_offset" Text="DC_Voltage" HorizontalAlignment="Center"/>
+                                <Separator/>
+                                <TextBlock Name="lbl_frequency" Text="Frequency" HorizontalAlignment="Center"/>
+                                <Separator/>
+                                <TextBlock Name="lbl_stdError" Text="StdError" HorizontalAlignment="Center"/>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+
+                    <StackPanel Spacing="10">
+                        <Button Name="btnOpenCal" Content="Open Calibration" HorizontalAlignment="Stretch"/>
+                        <TextBlock Name="lbl_EstimatedVoltage" Text="Estimated Voltage: ---" FontWeight="Bold" HorizontalAlignment="Center"/>
+                        <Separator/>
+                        <TextBox Name="txt_fileName" Text="FileName" PlaceholderText="Enter file name..."/>
+                        <Button Name="btn_saveCsv" Content="Save Data" HorizontalAlignment="Stretch" Background="#E0E0E0"/>
+                    </StackPanel>
+
+                    <HeaderedContentControl Header="Notch Filter">
+                        <StackPanel Spacing="5">
+                            <Button Name="btn_NotchFilter" Content="Notch OFF" HorizontalAlignment="Stretch"/>
+                            <Slider Name="trackBar_NotchFilter_Qvalue" Minimum="1" Maximum="100" Value="10"/>
+                        </StackPanel>
+                    </HeaderedContentControl>
+                </StackPanel>
+            </ScrollViewer>
+        </Border>
+
+        <!-- [중앙 차트 영역] : 창 크기에 따라 유동적으로 변함 -->
+        <Grid Grid.Column="1" RowDefinitions="*, Auto" Margin="15,0">
+            <Border Grid.Row="0" Background="Black" CornerRadius="8" ClipToBounds="True">
+                <Panel>
+                    <!-- 실제 차트가 들어갈 자리 -->
+                    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <TextBlock Text="[ CHART AREA ]" Foreground="Lime" FontSize="24" HorizontalAlignment="Center"/>
+                        <TextBlock Text="Resizes automatically with window" Foreground="#666666" HorizontalAlignment="Center"/>
+                    </StackPanel>
+                </Panel>
+            </Border>
+            <TextBlock Grid.Row="1" Name="lbl_SampleRate" Text="Sample Rate: ---" HorizontalAlignment="Right" Margin="0,5,0,0"/>
+        </Grid>
+
+        <!-- [오른쪽 축 설정] -->
+        <Border Grid.Column="2" BorderBrush="Silver" BorderThickness="1,0,0,0" Padding="10,0,0,0">
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <StackPanel Spacing="20">
+                    <HeaderedContentControl Header="X-axis [ms]">
+                        <Border BorderBrush="Silver" BorderThickness="1" CornerRadius="5" Padding="10">
+                            <StackPanel Spacing="8">
+                                <RadioButton Name="radioBtn_auto_X_axis" Content="Auto" IsChecked="True"/>
+                                <RadioButton Name="radioBtn_manual_X_axis" Content="Manual"/>
+                                <TextBlock Text="Min" FontSize="12" Foreground="Gray"/>
+                                <NumericUpDown Name="numUpDown_Min_Xvalue"/>
+                                <TextBlock Text="Max" FontSize="12" Foreground="Gray"/>
+                                <NumericUpDown Name="numUpDown_Max_Xvalue"/>
+                            </StackPanel>
+                        </Border>
+                    </HeaderedContentControl>
+
+                    <HeaderedContentControl Header="Y-axis [mV]">
+                        <Border BorderBrush="Silver" BorderThickness="1" CornerRadius="5" Padding="10">
+                            <StackPanel Spacing="8">
+                                <RadioButton Name="radioBtn_auto_Y_axis" Content="Auto" IsChecked="True"/>
+                                <RadioButton Name="radioBtn_manual_Y_axis" Content="Manual"/>
+                                <TextBlock Text="Min" FontSize="12" Foreground="Gray"/>
+                                <NumericUpDown Name="numUpDown_Min_Yvalue"/>
+                                <TextBlock Text="Max" FontSize="12" Foreground="Gray"/>
+                                <NumericUpDown Name="numUpDown_Max_Yvalue"/>
+                            </StackPanel>
+                        </Border>
+                    </HeaderedContentControl>
+                </StackPanel>
+            </ScrollViewer>
+        </Border>
+    </Grid>
+</Window>
