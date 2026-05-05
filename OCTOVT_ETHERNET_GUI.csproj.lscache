@@ -56,10 +56,12 @@ TemporaryDependencyNodeTargetIdentifier=net10.0
 
 [sourceFiles]
 App.axaml.cs
+Models/SvPacketData.cs
 obj/Debug/net10.0/
  .NETCoreApp,Version=v10.0.AssemblyAttributes.cs
  OCTOVT_ETHERNET_GUI.AssemblyInfo.cs
 Program.cs
+Services/Iec61850SvService.cs
 ViewLocator.cs
 ViewModels/
  MainWindowViewModel.cs

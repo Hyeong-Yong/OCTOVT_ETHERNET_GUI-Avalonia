@@ -5,6 +5,7 @@ C:\Dev\Avalonia\OCTOVT_ETHERNET_GUI\obj\Debug\net10.0\OCTOVT_ETHERNET_GUI.Genera
 C:\Dev\Avalonia\OCTOVT_ETHERNET_GUI\obj\Debug\net10.0\OCTOVT_ETHERNET_GUI.AssemblyInfoInputs.cache
 C:\Dev\Avalonia\OCTOVT_ETHERNET_GUI\obj\Debug\net10.0\OCTOVT_ETHERNET_GUI.AssemblyInfo.cs
 C:\Dev\Avalonia\OCTOVT_ETHERNET_GUI\obj\Debug\net10.0\OCTOVT_ETHERNET_GUI.csproj.CoreCompileInputs.cache
+C:\Dev\Avalonia\OCTOVT_ETHERNET_GUI\obj\Debug\net10.0\OCTOVT_ETHERNET_GUI.sourcelink.json
 C:\Dev\Avalonia\OCTOVT_ETHERNET_GUI\bin\Debug\net10.0\OCTOVT_ETHERNET_GUI.exe
 C:\Dev\Avalonia\OCTOVT_ETHERNET_GUI\bin\Debug\net10.0\OCTOVT_ETHERNET_GUI.deps.json
 C:\Dev\Avalonia\OCTOVT_ETHERNET_GUI\bin\Debug\net10.0\OCTOVT_ETHERNET_GUI.runtimeconfig.json
